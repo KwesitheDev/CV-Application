@@ -1,35 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import PersonalInfo from './PersonalInfo';
+import Education from './Education';
+import WorkExperience from './WorkExperience';
+import CVPreview from './CVPreview';
+import './App.css';
+// import  './styles.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [data, setData] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    about: '',
+    address: '',
+    linkedIn: '',
+    website: '',
+    education: [],
+    experience: [],
+  });
+
+  const handleDataChange = (key, value) => {
+    setData({ ...data, [key]: value });
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="container">
+      <div className="form-container test">
+        <PersonalInfo onChange={handleDataChange} />
+        <Education onChange={handleDataChange} />
+        <WorkExperience onChange={handleDataChange} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+      <CVPreview data={data} className="test"/>
+    </div>
+  );
+};
 
-export default App
+export default App;

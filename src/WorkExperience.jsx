@@ -1,176 +1,227 @@
 import React, { useState } from 'react';
 
-const WorkExperience = ({ onSubmit }) => {
-  const [experiences, setExperiences] = useState([{
-    company: '',
-    position: '',
-    location: '',
-    startDate: '',
-    endDate: '',
-    current: false,
-    responsibilities: '',
-    achievements: ''
+const WorkExperience = ({ onChange }) => {
+  const [experiences, setExperiences] = useState([{ 
+    company: '', 
+    role: '', 
+    startDate: '', 
+    endDate: '', 
+    isCurrentJob: false,
+    description: '',
+    skills: []
   }]);
 
-  const handleChange = (index, e) => {
+  const [newSkill, setNewSkill] = useState('');
+
+  const handleInputChange = (index, e) => {
     const { name, value, type, checked } = e.target;
-    const newExperiences = [...experiences];
-    newExperiences[index] = {
-      ...newExperiences[index],
-      [name]: type === 'checkbox' ? checked : value
-    };
-    setExperiences(newExperiences);
+    const updatedExperiences = [...experiences];
+    
+    // Handle checkbox separately
+    if (type === 'checkbox') {
+      updatedExperiences[index][name] = checked;
+      
+      // If current job is checked, clear end date
+      if (checked) {
+        updatedExperiences[index].endDate = '';
+      }
+    } else {
+      updatedExperiences[index][name] = value;
+    }
+    
+    setExperiences(updatedExperiences);
+    onChange('experiences', updatedExperiences);
   };
 
   const addExperience = () => {
-    setExperiences([...experiences, {
-      company: '',
-      position: '',
-      location: '',
-      startDate: '',
-      endDate: '',
-      current: false,
-      responsibilities: '',
-      achievements: ''
+    setExperiences([...experiences, { 
+      company: '', 
+      role: '', 
+      startDate: '', 
+      endDate: '', 
+      isCurrentJob: false,
+      description: '',
+      skills: []
     }]);
   };
 
-  const removeExperience = (index) => {
-    const newExperiences = experiences.filter((_, i) => i !== index);
-    setExperiences(newExperiences);
+  const deleteExperience = (indexToRemove) => {
+    const updatedExperiences = experiences.filter((_, index) => index !== indexToRemove);
+    setExperiences(updatedExperiences);
+    onChange('experiences', updatedExperiences);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(experiences);
+  const addSkillToExperience = (index) => {
+    if (newSkill.trim()) {
+      const updatedExperiences = [...experiences];
+      const currentSkills = updatedExperiences[index].skills || [];
+      
+      // Prevent duplicate skills
+      if (!currentSkills.includes(newSkill.trim())) {
+        updatedExperiences[index].skills = [...currentSkills, newSkill.trim()];
+        setExperiences(updatedExperiences);
+        onChange('experiences', updatedExperiences);
+        
+        // Reset skill input
+        setNewSkill('');
+      }
+    }
+  };
+
+  const deleteSkillFromExperience = (expIndex, skillToRemove) => {
+    const updatedExperiences = [...experiences];
+    updatedExperiences[expIndex].skills = updatedExperiences[expIndex].skills.filter(
+      skill => skill !== skillToRemove
+    );
+    setExperiences(updatedExperiences);
+    onChange('experiences', updatedExperiences);
+  };
+
+  const clearAllExperiences = () => {
+    setExperiences([{ 
+      company: '', 
+      role: '', 
+      startDate: '', 
+      endDate: '', 
+      isCurrentJob: false,
+      description: '',
+      skills: []
+    }]);
+    onChange('experiences', []);
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6 border rounded-lg shadow-md">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Work Experience</h2>
-        <button
-          type="button"
+    <section className="work-experience-section">
+      <h2 className="work-experience-title">Work Experience</h2>
+      
+      {experiences.map((exp, index) => (
+        <div key={index} className="experience-input-container">
+          <div className="experience-header">
+            <h3>Experience {index + 1}</h3>
+            {experiences.length > 1 && (
+              <button 
+                type="button" 
+                onClick={() => deleteExperience(index)}
+                className="delete-experience-btn"
+              >
+                ×
+              </button>
+            )}
+          </div>
+          
+          <input 
+            type="text" 
+            name="company" 
+            placeholder="Company" 
+            value={exp.company}
+            onChange={(e) => handleInputChange(index, e)} 
+            className="form-input"
+          />
+          
+          <input 
+            type="text" 
+            name="role" 
+            placeholder="Role" 
+            value={exp.role}
+            onChange={(e) => handleInputChange(index, e)} 
+            className="form-input"
+          />
+          
+          <div className="date-input-container">
+            <input 
+              type="date" 
+              name="startDate" 
+              placeholder="Start Date"
+              value={exp.startDate}
+              onChange={(e) => handleInputChange(index, e)} 
+              className="form-input"
+            />
+            
+            <input 
+              type="date" 
+              name="endDate" 
+              placeholder="End Date"
+              value={exp.endDate}
+              onChange={(e) => handleInputChange(index, e)} 
+              className="form-input"
+              disabled={exp.isCurrentJob}
+            />
+          </div>
+          
+          <div>
+            <label>
+              <input 
+                type="checkbox" 
+                name="isCurrentJob"
+                checked={exp.isCurrentJob}
+                onChange={(e) => handleInputChange(index, e)}
+              />
+              Currently Working Here
+            </label>
+          </div>
+          
+          <textarea 
+            name="description" 
+            placeholder="Job Description"
+            value={exp.description}
+            onChange={(e) => handleInputChange(index, e)} 
+            className="about-textarea"
+          />
+          
+          <div>
+            <input 
+              type="text" 
+              placeholder="Add Skill"
+              value={newSkill}
+              onChange={(e) => setNewSkill(e.target.value)}
+              className="form-input"
+            />
+            <button 
+              type="button" 
+              onClick={() => addSkillToExperience(index)}
+              className="add-experience-btn"
+            >
+              Add Skill
+            </button>
+          </div>
+          
+          {exp.skills && exp.skills.length > 0 && (
+            <div className="skills-container">
+              {exp.skills.map((skill, skillIndex) => (
+                <div key={skillIndex} className="skill-tag">
+                  {skill}
+                  <button 
+                    type="button" 
+                    onClick={() => deleteSkillFromExperience(index, skill)}
+                    className="skill-delete-btn"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+      
+      <div className="button-container">
+        <button 
+          type="button" 
           onClick={addExperience}
-          className="text-blue-500 hover:text-blue-600 flex items-center gap-2"
+          className="add-experience-btn"
         >
-          + Add Experience
+          Add Another Experience
+        </button>
+        
+        <button 
+          type="button" 
+          onClick={clearAllExperiences}
+          className="clear-btn"
+        >
+          Clear All Experiences
         </button>
       </div>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {experiences.map((experience, index) => (
-          <div key={index} className="p-4 border rounded-lg space-y-4">
-            <div className="flex justify-end">
-              {experiences.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removeExperience(index)}
-                  className="text-red-500 hover:text-red-600"
-                >
-                  Remove
-                </button>
-              )}
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Company</label>
-                <input
-                  type="text"
-                  name="company"
-                  value={experience.company}
-                  onChange={(e) => handleChange(index, e)}
-                  className="w-full p-2 border rounded-md"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Position</label>
-                <input
-                  type="text"
-                  name="position"
-                  value={experience.position}
-                  onChange={(e) => handleChange(index, e)}
-                  className="w-full p-2 border rounded-md"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Location</label>
-                <input
-                  type="text"
-                  name="location"
-                  value={experience.location}
-                  onChange={(e) => handleChange(index, e)}
-                  className="w-full p-2 border rounded-md"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    name="current"
-                    checked={experience.current}
-                    onChange={(e) => handleChange(index, e)}
-                    className="rounded"
-                  />
-                  <span className="text-sm font-medium">Current Position</span>
-                </label>
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Start Date</label>
-                <input
-                  type="date"
-                  name="startDate"
-                  value={experience.startDate}
-                  onChange={(e) => handleChange(index, e)}
-                  className="w-full p-2 border rounded-md"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">End Date</label>
-                <input
-                  type="date"
-                  name="endDate"
-                  value={experience.endDate}
-                  onChange={(e) => handleChange(index, e)}
-                  className="w-full p-2 border rounded-md"
-                  disabled={experience.current}
-                />
-              </div>
-              <div className="space-y-2 md:col-span-2">
-                <label className="text-sm font-medium">Key Responsibilities</label>
-                <textarea
-                  name="responsibilities"
-                  value={experience.responsibilities}
-                  onChange={(e) => handleChange(index, e)}
-                  className="w-full p-2 border rounded-md"
-                  rows="3"
-                  required
-                  placeholder="Describe your key responsibilities..."
-                />
-              </div>
-              <div className="space-y-2 md:col-span-2">
-                <label className="text-sm font-medium">Key Achievements</label>
-                <textarea
-                  name="achievements"
-                  value={experience.achievements}
-                  onChange={(e) => handleChange(index, e)}
-                  className="w-full p-2 border rounded-md"
-                  rows="3"
-                  placeholder="List your key achievements..."
-                />
-              </div>
-            </div>
-          </div>
-        ))}
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
-        >
-          Save Work Experience
-        </button>
-      </form>
-    </div>
+    </section>
   );
 };
 

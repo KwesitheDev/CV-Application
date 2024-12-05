@@ -1,0 +1,94 @@
+.cv-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.cv-header {
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-bottom: 2px solid #007bff;
+  margin-bottom: 20px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.name {
+  font-size: 2.5rem;
+  color: #333;
+  margin: 0;
+}
+
+.print-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.print-button:hover {
+  background-color: #0056b3;
+}
+
+.contact-info {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.cv-section {
+  margin-bottom: 20px;
+}
+
+.cv-section h2 {
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.education-item, .experience-item {
+  margin-bottom: 15px;
+}
+
+.education-item h3, .experience-item h3 {
+  margin: 0 0 5px 0;
+  color: #333;
+}
+
+.duration {
+  color: #666;
+  font-style: italic;
+  margin-bottom: 5px;
+}
+
+@media print {
+  .cv-container {
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .print-button {
+    display: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 10mm;
+}
+
+.cv-container{
+
+}
