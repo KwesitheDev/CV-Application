@@ -1,38 +1,29 @@
-import { useState } from 'react';
-import PersonalInfo from './PersonalInfo';
-import Education from './Education';
-import WorkExperience from './WorkExperience';
-import CVPreview from './CVPreview';
-import './App.css';
-// import  './styles.css'
+import { useState } from 'react'
+import Header from './components/Header'
+import Education from './components/Education'
+import About from './components/About'
 
-const App = () => {
+
+function App() {
   const [data, setData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    about: '',
-    address: '',
-    linkedIn: '',
-    website: '',
-    education: [],
+    about: [],
     experience: [],
-  });
+    education: [],
+  })
 
-  const handleDataChange = (key, value) => {
-    setData({ ...data, [key]: value });
-  };
+  const handleDataChange = (key, value) => setData({ ...data, [key]: value })
 
   return (
-    <div className="container">
-      <div className="form-container test">
-        <PersonalInfo onChange={handleDataChange} />
+    <>
+      <Header />
+      <div className="flex flex-wrap mb-2.5 ">
         <Education onChange={handleDataChange} />
-        <WorkExperience onChange={handleDataChange} />
+        <About onChange={handleDataChange} />
       </div>
-      <CVPreview data={data} className="test"/>
-    </div>
-  );
-};
 
-export default App;
+
+    </>
+  )
+}
+
+export default App
