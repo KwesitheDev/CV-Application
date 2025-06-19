@@ -11,6 +11,7 @@ const About = ({ onChange }) => {
         address: '',
         linkedIn: '',
         website: '',
+        summary: '',
     })
 
     const handleAboutChange = (key, value) => setAbout({ ...about, [key]: value })
@@ -26,6 +27,10 @@ const About = ({ onChange }) => {
             <div className="mb-4">
                 <label className="label" htmlFor="lastName">Last Name</label>
                 <input className="input" type="text" name="lastName" id="lastName" value={about.lastName} onChange={(e) => handleAboutChange('lastName', e.target.value)} />
+            </div>
+            <div className="mb-4">
+                <label htmlFor="summary" className="label">Summary</label>
+                <textarea placeholder="A brief summary/description about yourself" type="text" name="summary" id="summary" className="input h-20" value={about.summary} onChange={(e) => handleAboutChange('summary', e.target.value)} />
             </div>
             <div className="mb-4">
                 <label className="label" htmlFor="email">Email</label>
@@ -47,11 +52,11 @@ const About = ({ onChange }) => {
                 <input className="input" type="text" name="address" id="address" value={about.address} onChange={(e) => handleAboutChange('address', e.target.value)} />
             </div>
             <div className="mb-4">
-                <label className="label" htmlFor="linkedIn">LinkedIn</label>
+                <label className="label" htmlFor="linkedIn">LinkedIn <span className="italic font-light">(Optional)</span></label>
                 <input className="input" type="url" name="linkedIn" id="linkedIn" value={about.linkedIn} onChange={(e) => handleAboutChange('linkedIn', e.target.value)} />
             </div>
             <div className="mb-4">
-                <label className="label" htmlFor="website">Website</label>
+                <label className="label" htmlFor="website">Website <span className="italic font-light">(Optional)</span></label>
                 <input className="input" type="url" name="website" id="website" value={about.website} onChange={(e) => handleAboutChange('website', e.target.value)} />
             </div>
 

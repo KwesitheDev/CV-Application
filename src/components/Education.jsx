@@ -63,7 +63,7 @@ const Education = ({ onChange }) => {
 
     return (
         <section className="section">
-            <h2 className="section-h2">Education Section</h2>
+            <h2 className="section-h2">Education</h2>
 
             {education.map((entry, index) => (
                 <div key={index} className="mb-6 border-b pb-4">
