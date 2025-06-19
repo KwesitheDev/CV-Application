@@ -1,54 +1,65 @@
-import { useState } from "react"
+import { useState, useEffect } from "react";
 
 const Experience = ({ onChange }) => {
     const [experience, setExperience] = useState([
         {
-            nameOfCompany: '',
-            startDate: '',
-            endDate: '',
-            role: '',
-            description: '',
-        }
-    ])
+            nameOfCompany: "",
+            startDate: "",
+            endDate: "",
+            role: "",
+            description: "",
+        },
+    ]);
+
+    useEffect(() => {
+        onChange("experience", experience);
+    }, [experience]);
 
     const handleExperienceChange = (index, e) => {
-        const { name, value } = e.target
-        const updatedExperience = [...experience]
+        const { name, value } = e.target;
+        const updatedExperience = [...experience];
         updatedExperience[index][name] = value;
-        setExperience(updatedEducation)
-    }
+        setExperience(updatedExperience);
+    };
 
     const addExperience = () => {
         setExperience([
-            ...experience, {
-                nameOfCompany: '',
-                startDate: '',
-                endDate: '',
-                role: '',
-                description: '',
-            }
-        ])
-    }
+            ...experience,
+            {
+                nameOfCompany: "",
+                startDate: "",
+                endDate: "",
+                role: "",
+                description: "",
+            },
+        ]);
+    };
 
     const deleteExperience = (indexToRemove) => {
         const updatedExperience = experience.filter((_, index) => index !== indexToRemove);
-        setExperience(updatedExperience.length ? updatedExperience : [{
-            nameOfCompany: '',
-            startDate: '',
-            endDate: '',
-            role: '',
-            description: '',
-        }]);
+        setExperience(
+            updatedExperience.length
+                ? updatedExperience
+                : [
+                    {
+                        nameOfCompany: "",
+                        startDate: "",
+                        endDate: "",
+                        role: "",
+                        description: "",
+                    },
+                ]
+        );
     };
 
     const removeAllExperience = () => {
         setExperience([
             {
-                nameOfCompany: '',
-                startDate: '',
-                endDate: '',
-                role: '',
-                description: '',
+                nameOfCompany: "",
+                startDate: "",
+                endDate: "",
+                role: "",
+                description: "",
             },
         ]);
     };
@@ -58,7 +69,7 @@ const Experience = ({ onChange }) => {
             <h2 className="section-h2">Experience</h2>
 
             {experience.map((entry, index) => (
-                <div className="mb-6 border-b pb-4 ">
+                <div key={index} className="mb-6 border-b pb-4">
                     <div className="flex justify-between items-center mb-2">
                         <h3 className="text-lg font-semibold">Experience {index + 1}</h3>
                         {experience.length > 1 && (
@@ -71,65 +82,41 @@ const Experience = ({ onChange }) => {
                             </button>
                         )}
                     </div>
-                    <div className="flex flex-col mb-2">
-                        <label className="label" htmlFor={`nameOfCompany-${index}`}>Name of Company</label>
-                        <input
-                            className="input"
-                            id={`nameOfCompany-${index}`}
-                            name="nameOfCompany"
-                            type="text"
-                            value={entry.nameOfCompany}
-                            onChange={(e) => handleInputChange(index, e)}
-                        />
-                    </div>
 
-                    <div className="flex flex-col mb-2">
-                        <label className="label" htmlFor={`role-${index}`}>Role / Postion</label>
-                        <input
-                            className="input"
-                            id={`role-${index}`}
-                            name="role"
-                            type="text"
-                            value={entry.role}
-                            onChange={(e) => handleInputChange(index, e)}
-                        />
-                    </div>
-                    <div className="flex flex-col mb-2">
-                        <label className="label" htmlFor={`description-${index}`}>Description</label>
-                        <textarea
-                            placeholder="A brief description of your job/position"
-                            className="input"
-                            id={`description-${index}`}
-                            name="description"
-                            type="text"
-                            value={entry.description}
-                            onChange={(e) => handleInputChange(index, e)}
-                        />
-                    </div>
-
-                    <div className="flex flex-col mb-2">
-                        <label className="label" htmlFor={`startDate-${index}`}>Start Date</label>
-                        <input
-                            className="input"
-                            id={`startDate-${index}`}
-                            name="startDate"
-                            type="text"
-                            value={entry.startDate}
-                            onChange={(e) => handleInputChange(index, e)}
-                        />
-                    </div>
-                    <div className="flex flex-col mb-2">
-                        <label className="label" htmlFor={`endDate-${index}`}>End Date</label>
-                        <input
-                            className="input"
-                            id={`endDate-${index}`}
-                            name="endDate"
-                            type="text"
-                            value={entry.endDate}
-                            onChange={(e) => handleInputChange(index, e)}
-                        />
-                    </div>
-
+                    {["nameOfCompany", "role", "description", "startDate", "endDate"].map((field) => (
+                        <div className="flex flex-col mb-2" key={field}>
+                            <label className="label" htmlFor={`${field}-${index}`}>
+                                {field === "nameOfCompany"
+                                    ? "Name of Company"
+                                    : field === "role"
+                                        ? "Role / Position"
+                                        : field === "startDate"
+                                            ? "Start Date"
+                                            : field === "endDate"
+                                                ? "End Date"
+                                                : "Description"}
+                            </label>
+                            {field === "description" ? (
+                                <textarea
+                                    className="input"
+                                    id={`${field}-${index}`}
+                                    name={field}
+                                    placeholder="A brief description of your job/position"
+                                    value={entry[field]}
+                                    onChange={(e) => handleExperienceChange(index, e)}
+                                />
+                            ) : (
+                                <input
+                                    className="input"
+                                    id={`${field}-${index}`}
+                                    name={field}
+                                    type="text"
+                                    value={entry[field]}
+                                    onChange={(e) => handleExperienceChange(index, e)}
+                                />
+                            )}
+                        </div>
+                    ))}
                 </div>
             ))}
 
@@ -139,7 +126,7 @@ const Experience = ({ onChange }) => {
                     className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                     onClick={addExperience}
                 >
-                    Add Education
+                    Add Experience
                 </button>
 
                 <button
@@ -150,10 +137,8 @@ const Experience = ({ onChange }) => {
                     Clear All
                 </button>
             </div>
-
         </section>
-    )
+    );
+};
 
-}
-
-export default Experience
+export default Experience;
