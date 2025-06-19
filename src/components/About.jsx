@@ -4,7 +4,7 @@ import 'react-phone-number-input/style.css';
 
 const About = ({ onChange }) => {
     const [about, setAbout] = useState({
-        firstame: '',
+        firstName: '',
         lastName: '',
         email: '',
         phone: '',
@@ -14,15 +14,21 @@ const About = ({ onChange }) => {
         summary: '',
     })
 
-    const handleAboutChange = (key, value) => setAbout({ ...about, [key]: value })
+    const handleAboutChange = (key, value) => {
+        const updated = { ...about, [key]: value };
+        setAbout(updated);
+        onChange && onChange(updated);
+    };
+
 
     return (
         <section className="section" >
             <h2 className="section-h2">About</h2>
 
             <div className="mb-4">
-                <label className="label" htmlFor="firstame">First Name</label>
-                <input className="input" type="text" name="firstame" id="firstame" value={about.firstame} onChange={(e) => handleAboutChange('firstame', e.target.value)} />
+                <label className="label" htmlFor="firstName">First Name</label>
+                <input className="input" type="text" name="firstName" id="firstName
+                " value={about.firstName} onChange={(e) => handleAboutChange('firstName', e.target.value)} />
             </div>
             <div className="mb-4">
                 <label className="label" htmlFor="lastName">Last Name</label>
