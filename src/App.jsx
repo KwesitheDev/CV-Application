@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Header from './components/Header'
 import Education from './components/Education'
 import About from './components/About'
+import Experience from './components/Experience'
 
 
 function App() {
@@ -16,8 +17,9 @@ function App() {
   return (
     <>
       <Header />
-      <div className="flex flex-wrap mb-2.5 ">
-        <Education onChange={handleDataChange} />
+      <div className="flex flex-wrap mb-2.5 flex-col sm:flex-row  ">
+        <Experience onChange={handleDataChange} />
+        {/* <Education onChange={handleDataChange} /> */}
         <About onChange={handleDataChange} />
       </div>
 
