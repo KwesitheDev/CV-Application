@@ -12,7 +12,7 @@ const Experience = ({ onChange }) => {
     ]);
 
     useEffect(() => {
-        onChange("experience", experience);
+        onChange(experience);
     }, [experience]);
 
     const handleExperienceChange = (index, e) => {
