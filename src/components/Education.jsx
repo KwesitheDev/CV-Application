@@ -13,10 +13,10 @@ const Education = ({ onChange }) => {
 
     // Update parent when education changes
     useEffect(() => {
-        if (onChange) {
-            onChange(education);
-        }
-    }, [education, onChange]);
+
+        onChange(education);
+
+    }, [education]);
 
     const handleInputChange = (index, e) => {
         const { name, value } = e.target;
